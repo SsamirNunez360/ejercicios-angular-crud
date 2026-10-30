@@ -86,6 +86,19 @@ export class ProductoComponent implements OnInit {
     this.limpiar();
   }
 
+  eliminar(id: number) {
+    if (!confirm('¿Está seguro de eliminar este producto del inventario?')) {
+      return; // Cancelar conserva la fila
+    }
+
+    this.productos = this.productos.filter(p => p.id !== id);
+    this.persistir();
+
+    if (this.editandoId === id) {
+      this.cancelar();
+    }
+  }
+
   validar(): boolean {
     if (!this.producto.codigo.trim() || !this.producto.nombre.trim()) {
       this.error = 'El código y el nombre son obligatorios y no pueden ser solo espacios.';
