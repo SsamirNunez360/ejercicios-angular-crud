@@ -17,6 +17,7 @@ export class EstudianteComponent implements OnInit {
     fechaIngreso: '',
   };
   error = '';
+  editandoId: number | null = null;
 
   constructor(private router: Router) {}
 
@@ -41,16 +42,47 @@ export class EstudianteComponent implements OnInit {
   guardar() {
     if (!this.validar()) return;
 
-    const id = this.estudiantes.length ? Math.max(...this.estudiantes.map(e => e.id)) + 1 : 1;
-    this.estudiantes.push({
-      id,
-      cuenta: this.estudiante.cuenta.trim(),
-      nombre: this.estudiante.nombre.trim(),
-      carrera: this.estudiante.carrera.trim(),
-      fechaIngreso: this.estudiante.fechaIngreso,
-    });
+    if (this.editandoId === null) {
+      // Modo creación
+      const id = this.estudiantes.length ? Math.max(...this.estudiantes.map(e => e.id)) + 1 : 1;
+      this.estudiantes.push({
+        id,
+        cuenta: this.estudiante.cuenta.trim(),
+        nombre: this.estudiante.nombre.trim(),
+        carrera: this.estudiante.carrera.trim(),
+        fechaIngreso: this.estudiante.fechaIngreso,
+      });
+    } else {
+      // Modo actualización (conserva mismo ID y cantidad)
+      const index = this.estudiantes.findIndex(e => e.id === this.editandoId);
+      if (index !== -1) {
+        this.estudiantes[index] = {
+          id: this.editandoId,
+          cuenta: this.estudiante.cuenta.trim(),
+          nombre: this.estudiante.nombre.trim(),
+          carrera: this.estudiante.carrera.trim(),
+          fechaIngreso: this.estudiante.fechaIngreso,
+        };
+      }
+    }
 
     this.persistir();
+    this.cancelar();
+  }
+
+  editar(e: any) {
+    this.editandoId = e.id;
+    this.estudiante = {
+      cuenta: e.cuenta,
+      nombre: e.nombre,
+      carrera: e.carrera,
+      fechaIngreso: e.fechaIngreso,
+    };
+    this.error = '';
+  }
+
+  cancelar() {
+    this.editandoId = null;
     this.limpiar();
   }
 

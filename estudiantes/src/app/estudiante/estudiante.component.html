@@ -1,5 +1,5 @@
 <div class="app-container">
-  <!-- Formulario de Registro -->
+  <!-- Formulario -->
   <div class="card">
     <div class="header-bar">
       <div>
@@ -9,9 +9,11 @@
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
 
-    <h3>Registrar Nuevo Estudiante</h3>
+    <h3>{{ editandoId === null ? 'Registrar Nuevo Estudiante' : 'Editar Estudiante #' + editandoId }}</h3>
     <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;">
-      Ingrese los datos del alumno. El identificador interno se generará automáticamente.
+      {{ editandoId === null 
+          ? 'Ingrese los datos del alumno. El identificador interno se generará automáticamente.' 
+          : 'Modifique los campos y pulse Actualizar para guardar los cambios.' }}
     </p>
 
     <form (ngSubmit)="guardar()">
@@ -61,7 +63,12 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Guardar Estudiante</button>
+        <button type="submit" class="btn btn-primary">
+          {{ editandoId === null ? 'Guardar Estudiante' : 'Actualizar Estudiante' }}
+        </button>
+        @if (editandoId !== null) {
+          <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+        }
       </div>
     </form>
 
@@ -93,6 +100,7 @@
               <th>Nombre Completo</th>
               <th>Carrera</th>
               <th>Fecha de Ingreso</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -103,6 +111,11 @@
                 <td>{{ e.nombre }}</td>
                 <td>{{ e.carrera }}</td>
                 <td>{{ e.fechaIngreso }}</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-secondary btn-sm" (click)="editar(e)">Editar</button>
+                  </div>
+                </td>
               </tr>
             }
           </tbody>
