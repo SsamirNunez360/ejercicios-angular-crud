@@ -7,8 +7,41 @@
       </div>
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
-    <div class="empty-state">
-      <p>Bienvenido al módulo de Inventario. Sesión iniciada correctamente.</p>
+
+    <div class="stats-bar">
+      <h3>Inventario Actual</h3>
+      <span class="total-count">Total de productos: {{ productos.length }}</span>
     </div>
+
+    @if (productos.length === 0) {
+      <div class="empty-state">
+        <p>No hay productos registrados en el inventario.</p>
+      </div>
+    } @else {
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Precio</th>
+              <th>Existencias</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (p of productos; track p.id) {
+              <tr>
+                <td><strong>#{{ p.id }}</strong></td>
+                <td><code>{{ p.codigo }}</code></td>
+                <td>{{ p.nombre }}</td>
+                <td>L {{ p.precio }}</td>
+                <td>{{ p.existencias }} unidades</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
   </div>
 </div>
