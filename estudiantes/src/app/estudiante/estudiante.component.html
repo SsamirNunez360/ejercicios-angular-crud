@@ -7,8 +7,41 @@
       </div>
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
-    <div class="empty-state">
-      <p>Bienvenido al módulo de Registro de Estudiantes. Sesión iniciada correctamente.</p>
+
+    <div class="stats-bar">
+      <h3>Padrón Estudiantil</h3>
+      <span class="total-count">Total de estudiantes: {{ estudiantes.length }}</span>
     </div>
+
+    @if (estudiantes.length === 0) {
+      <div class="empty-state">
+        <p>No hay estudiantes registrados.</p>
+      </div>
+    } @else {
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>N° Cuenta</th>
+              <th>Nombre Completo</th>
+              <th>Carrera</th>
+              <th>Fecha de Ingreso</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (e of estudiantes; track e.id) {
+              <tr>
+                <td><strong>#{{ e.id }}</strong></td>
+                <td><code>{{ e.cuenta }}</code></td>
+                <td>{{ e.nombre }}</td>
+                <td>{{ e.carrera }}</td>
+                <td>{{ e.fechaIngreso }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
   </div>
 </div>
