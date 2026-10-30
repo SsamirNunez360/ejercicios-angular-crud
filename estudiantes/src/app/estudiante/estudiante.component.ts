@@ -86,6 +86,19 @@ export class EstudianteComponent implements OnInit {
     this.limpiar();
   }
 
+  eliminar(id: number) {
+    if (!confirm('¿Está seguro de eliminar este estudiante del registro?')) {
+      return; // Cancelar conserva la fila
+    }
+
+    this.estudiantes = this.estudiantes.filter(e => e.id !== id);
+    this.persistir();
+
+    if (this.editandoId === id) {
+      this.cancelar();
+    }
+  }
+
   validar(): boolean {
     if (!this.estudiante.cuenta.trim() || !this.estudiante.nombre.trim() || !this.estudiante.carrera.trim() || !this.estudiante.fechaIngreso) {
       this.error = 'Todos los campos (cuenta, nombre, carrera y fecha de ingreso) son obligatorios.';
