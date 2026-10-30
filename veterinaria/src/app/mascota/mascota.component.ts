@@ -43,7 +43,6 @@ export class MascotaComponent implements OnInit {
     if (!this.validar()) return;
 
     if (this.editandoId === null) {
-      // Modo creación (dos mascotas pueden tener el mismo nombre, se distinguen por ID)
       const id = this.mascotas.length ? Math.max(...this.mascotas.map(m => m.id)) + 1 : 1;
       this.mascotas.push({
         id,
@@ -53,7 +52,7 @@ export class MascotaComponent implements OnInit {
         propietario: this.mascota.propietario.trim(),
       });
     } else {
-      // Modo actualización (conserva mismo ID y cantidad)
+      // Actualización: conserva mismo ID y misma cantidad de registros
       const index = this.mascotas.findIndex(m => m.id === this.editandoId);
       if (index !== -1) {
         this.mascotas[index] = {
@@ -86,17 +85,6 @@ export class MascotaComponent implements OnInit {
     this.limpiar();
   }
 
-  eliminar(id: number) {
-    if (!confirm('¿Está seguro de eliminar esta mascota del registro?')) {
-      return;
-    }
-    this.mascotas = this.mascotas.filter(m => m.id !== id);
-    this.persistir();
-    if (this.editandoId === id) {
-      this.cancelar();
-    }
-  }
-
   validar(): boolean {
     if (!this.mascota.nombre.trim() || !this.mascota.especie.trim() || !this.mascota.propietario.trim()) {
       this.error = 'Nombre, especie y propietario son obligatorios y no pueden ser solo espacios.';
@@ -105,7 +93,7 @@ export class MascotaComponent implements OnInit {
 
     const e = Number(this.mascota.edad);
     if (this.mascota.edad === null || !Number.isInteger(e) || e < 0) {
-      this.error = 'La edad debe ser un número entero mayor o igual a cero (admite 0 para menores de un año).';
+      this.error = 'La edad debe ser un número entero mayor o igual a cero.';
       return false;
     }
 
