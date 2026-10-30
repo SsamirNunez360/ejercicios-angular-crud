@@ -1,0 +1,49 @@
+<div class="login-page">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="icon-badge">🐾</div>
+      <h2>Clínica Veterinaria</h2>
+      <p class="subtitle">Ingrese sus credenciales de veterinario para acceder</p>
+    </div>
+
+    <form (ngSubmit)="ingresar()">
+      <div class="form-group">
+        <label for="usuario">Usuario</label>
+        <input 
+          id="usuario"
+          type="text" 
+          [(ngModel)]="usuario" 
+          name="usuario" 
+          placeholder="Ej. veterinario" 
+          autocomplete="username"
+        >
+      </div>
+
+      <div class="form-group">
+        <label for="clave">Contraseña</label>
+        <input 
+          id="clave"
+          type="password" 
+          [(ngModel)]="clave" 
+          name="clave" 
+          placeholder="••••••••" 
+          autocomplete="current-password"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary btn-block">Ingresar a la Veterinaria</button>
+    </form>
+
+    @if (mensaje) {
+      <div class="alert-error">
+        <span>⚠️</span> {{ mensaje }}
+      </div>
+    }
+
+    <div class="demo-credentials">
+      <p><strong>Acceso de práctica:</strong></p>
+      <code>veterinario</code> / <code>mascotas123</code>
+    </div>
+  </div>
+</div>
+
