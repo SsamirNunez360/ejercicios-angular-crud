@@ -85,6 +85,17 @@ export class MascotaComponent implements OnInit {
     this.limpiar();
   }
 
+  eliminar(id: number) {
+    if (!confirm('¿Está seguro de eliminar esta mascota del registro?')) {
+      return; // Cancelar conserva la fila
+    }
+    this.mascotas = this.mascotas.filter(m => m.id !== id);
+    this.persistir();
+    if (this.editandoId === id) {
+      this.cancelar();
+    }
+  }
+
   validar(): boolean {
     if (!this.mascota.nombre.trim() || !this.mascota.especie.trim() || !this.mascota.propietario.trim()) {
       this.error = 'Nombre, especie y propietario son obligatorios y no pueden ser solo espacios.';
