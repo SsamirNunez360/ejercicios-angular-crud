@@ -48,7 +48,7 @@ export class LibroComponent implements OnInit {
         anio: Number(this.libro.anio)
       });
     } else {
-      // Modo actualización (conserva el mismo id y misma cantidad de registros)
+      // Modo actualización (mantiene mismo ID y misma cantidad)
       const index = this.libros.findIndex(l => l.id === this.editandoId);
       if (index !== -1) {
         this.libros[index] = {
@@ -79,6 +79,19 @@ export class LibroComponent implements OnInit {
   cancelar() {
     this.editandoId = null;
     this.limpiar();
+  }
+
+  eliminar(id: number) {
+    if (!confirm('¿Está seguro de eliminar este registro del catálogo?')) {
+      return; // Cancelar conserva la fila
+    }
+
+    this.libros = this.libros.filter(l => l.id !== id);
+    this.persistir();
+
+    if (this.editandoId === id) {
+      this.cancelar();
+    }
   }
 
   validar(): boolean {
