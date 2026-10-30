@@ -1,4 +1,5 @@
 <div class="app-container">
+  <!-- Formulario de Creación -->
   <div class="card">
     <div class="header-bar">
       <div>
@@ -8,6 +9,73 @@
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
 
+    <h3>Registrar Nuevo Producto</h3>
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;">
+      Ingrese los datos del producto. El ID será asignado automáticamente.
+    </p>
+
+    <form (ngSubmit)="guardar()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="codigo">Código del producto (ej. P003)</label>
+          <input 
+            id="codigo"
+            type="text" 
+            [(ngModel)]="producto.codigo" 
+            name="codigo" 
+            placeholder="Código único"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="nombre">Nombre del producto</label>
+          <input 
+            id="nombre"
+            type="text" 
+            [(ngModel)]="producto.nombre" 
+            name="nombre" 
+            placeholder="Nombre completo"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="precio">Precio en Lempiras (L)</label>
+          <input 
+            id="precio"
+            type="number" 
+            step="0.01"
+            [(ngModel)]="producto.precio" 
+            name="precio" 
+            placeholder="Mayor a 0 (ej. 35.50)"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="existencias">Existencias (unidades)</label>
+          <input 
+            id="existencias"
+            type="number" 
+            [(ngModel)]="producto.existencias" 
+            name="existencias" 
+            placeholder="Entero >= 0"
+          >
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Guardar Producto</button>
+      </div>
+    </form>
+
+    @if (error) {
+      <div class="alert-error">
+        <span>⚠️</span> {{ error }}
+      </div>
+    }
+  </div>
+
+  <!-- Listado de Productos -->
+  <div class="card">
     <div class="stats-bar">
       <h3>Inventario Actual</h3>
       <span class="total-count">Total de productos: {{ productos.length }}</span>
