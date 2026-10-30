@@ -1,5 +1,5 @@
 <div class="app-container">
-  <!-- Tarjeta de Encabezado y Formulario de Creación -->
+  <!-- Tarjeta de Encabezado y Formulario -->
   <div class="card">
     <div class="header-bar">
       <div>
@@ -9,9 +9,11 @@
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
 
-    <h3>Registrar Nuevo Libro</h3>
+    <h3>{{ editandoId === null ? 'Registrar Nuevo Libro' : 'Editar Libro #' + editandoId }}</h3>
     <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;">
-      Ingrese los datos del ejemplar. El identificador será asignado automáticamente.
+      {{ editandoId === null 
+          ? 'Ingrese los datos del ejemplar. El identificador será asignado automáticamente.' 
+          : 'Modifique los campos necesarios y pulse Actualizar para guardar los cambios.' }}
     </p>
 
     <form (ngSubmit)="guardar()">
@@ -62,7 +64,12 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Guardar Libro</button>
+        <button type="submit" class="btn btn-primary">
+          {{ editandoId === null ? 'Guardar Libro' : 'Actualizar Libro' }}
+        </button>
+        @if (editandoId !== null) {
+          <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+        }
       </div>
     </form>
 
@@ -94,6 +101,7 @@
               <th>Título</th>
               <th>Autor</th>
               <th>Año</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -104,6 +112,11 @@
                 <td>{{ l.titulo }}</td>
                 <td>{{ l.autor }}</td>
                 <td>{{ l.anio }}</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-secondary btn-sm" (click)="editar(l)">Editar</button>
+                  </div>
+                </td>
               </tr>
             }
           </tbody>

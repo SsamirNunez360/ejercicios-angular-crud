@@ -12,6 +12,7 @@ export class LibroComponent implements OnInit {
   libros: any[] = [];
   libro = { codigo: '', titulo: '', autor: '', anio: null as number | null };
   error = '';
+  editandoId: number | null = null;
 
   constructor(private router: Router) {}
 
@@ -36,16 +37,47 @@ export class LibroComponent implements OnInit {
   guardar() {
     if (!this.validar()) return;
     
-    const id = this.libros.length ? Math.max(...this.libros.map(l => l.id)) + 1 : 1;
-    this.libros.push({
-      id,
-      codigo: this.libro.codigo.trim(),
-      titulo: this.libro.titulo.trim(),
-      autor: this.libro.autor.trim(),
-      anio: Number(this.libro.anio)
-    });
+    if (this.editandoId === null) {
+      // Modo creación
+      const id = this.libros.length ? Math.max(...this.libros.map(l => l.id)) + 1 : 1;
+      this.libros.push({
+        id,
+        codigo: this.libro.codigo.trim(),
+        titulo: this.libro.titulo.trim(),
+        autor: this.libro.autor.trim(),
+        anio: Number(this.libro.anio)
+      });
+    } else {
+      // Modo actualización (conserva el mismo id y misma cantidad de registros)
+      const index = this.libros.findIndex(l => l.id === this.editandoId);
+      if (index !== -1) {
+        this.libros[index] = {
+          id: this.editandoId,
+          codigo: this.libro.codigo.trim(),
+          titulo: this.libro.titulo.trim(),
+          autor: this.libro.autor.trim(),
+          anio: Number(this.libro.anio)
+        };
+      }
+    }
 
     this.persistir();
+    this.cancelar();
+  }
+
+  editar(l: any) {
+    this.editandoId = l.id;
+    this.libro = {
+      codigo: l.codigo,
+      titulo: l.titulo,
+      autor: l.autor,
+      anio: l.anio
+    };
+    this.error = '';
+  }
+
+  cancelar() {
+    this.editandoId = null;
     this.limpiar();
   }
 
