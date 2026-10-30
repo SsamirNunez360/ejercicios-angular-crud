@@ -7,8 +7,41 @@
       </div>
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
-    <div class="empty-state">
-      <p>Bienvenido al sistema. Sesión iniciada correctamente.</p>
+
+    <div class="stats-bar">
+      <h3>Listado de Ejemplares</h3>
+      <span class="total-count">Total de registros: {{ libros.length }}</span>
     </div>
+
+    @if (libros.length === 0) {
+      <div class="empty-state">
+        <p>No hay libros registrados en el catálogo.</p>
+      </div>
+    } @else {
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Código</th>
+              <th>Título</th>
+              <th>Autor</th>
+              <th>Año</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (l of libros; track l.id) {
+              <tr>
+                <td><strong>#{{ l.id }}</strong></td>
+                <td><code>{{ l.codigo }}</code></td>
+                <td>{{ l.titulo }}</td>
+                <td>{{ l.autor }}</td>
+                <td>{{ l.anio }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
   </div>
 </div>
