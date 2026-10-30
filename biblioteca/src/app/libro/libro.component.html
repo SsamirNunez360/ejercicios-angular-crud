@@ -1,4 +1,5 @@
 <div class="app-container">
+  <!-- Tarjeta de Encabezado y Formulario de Creación -->
   <div class="card">
     <div class="header-bar">
       <div>
@@ -8,9 +9,75 @@
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
 
+    <h3>Registrar Nuevo Libro</h3>
+    <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;">
+      Ingrese los datos del ejemplar. El identificador será asignado automáticamente.
+    </p>
+
+    <form (ngSubmit)="guardar()">
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="codigo">Código (ej. 0003)</label>
+          <input 
+            id="codigo"
+            type="text" 
+            [(ngModel)]="libro.codigo" 
+            name="codigo" 
+            placeholder="Código único"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="titulo">Título del libro</label>
+          <input 
+            id="titulo"
+            type="text" 
+            [(ngModel)]="libro.titulo" 
+            name="titulo" 
+            placeholder="Título completo"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="autor">Autor</label>
+          <input 
+            id="autor"
+            type="text" 
+            [(ngModel)]="libro.autor" 
+            name="autor" 
+            placeholder="Nombre del autor"
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="anio">Año de publicación</label>
+          <input 
+            id="anio"
+            type="number" 
+            [(ngModel)]="libro.anio" 
+            name="anio" 
+            placeholder="1000 - 9999"
+          >
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">Guardar Libro</button>
+      </div>
+    </form>
+
+    @if (error) {
+      <div class="alert-error">
+        <span>⚠️</span> {{ error }}
+      </div>
+    }
+  </div>
+
+  <!-- Tarjeta del Listado -->
+  <div class="card">
     <div class="stats-bar">
-      <h3>Listado de Ejemplares</h3>
-      <span class="total-count">Total de registros: {{ libros.length }}</span>
+      <h3>Catálogo de Ejemplares</h3>
+      <span class="total-count">Total de libros: {{ libros.length }}</span>
     </div>
 
     @if (libros.length === 0) {
