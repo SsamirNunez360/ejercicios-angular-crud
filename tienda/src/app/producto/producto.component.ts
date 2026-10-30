@@ -17,6 +17,7 @@ export class ProductoComponent implements OnInit {
     existencias: null as number | null,
   };
   error = '';
+  editandoId: number | null = null;
 
   constructor(private router: Router) {}
 
@@ -41,16 +42,47 @@ export class ProductoComponent implements OnInit {
   guardar() {
     if (!this.validar()) return;
 
-    const id = this.productos.length ? Math.max(...this.productos.map(p => p.id)) + 1 : 1;
-    this.productos.push({
-      id,
-      codigo: this.producto.codigo.trim(),
-      nombre: this.producto.nombre.trim(),
-      precio: Number(this.producto.precio),
-      existencias: Number(this.producto.existencias),
-    });
+    if (this.editandoId === null) {
+      // Modo creación
+      const id = this.productos.length ? Math.max(...this.productos.map(p => p.id)) + 1 : 1;
+      this.productos.push({
+        id,
+        codigo: this.producto.codigo.trim(),
+        nombre: this.producto.nombre.trim(),
+        precio: Number(this.producto.precio),
+        existencias: Number(this.producto.existencias),
+      });
+    } else {
+      // Modo actualización (conserva el mismo ID y cantidad de registros)
+      const index = this.productos.findIndex(p => p.id === this.editandoId);
+      if (index !== -1) {
+        this.productos[index] = {
+          id: this.editandoId,
+          codigo: this.producto.codigo.trim(),
+          nombre: this.producto.nombre.trim(),
+          precio: Number(this.producto.precio),
+          existencias: Number(this.producto.existencias),
+        };
+      }
+    }
 
     this.persistir();
+    this.cancelar();
+  }
+
+  editar(p: any) {
+    this.editandoId = p.id;
+    this.producto = {
+      codigo: p.codigo,
+      nombre: p.nombre,
+      precio: p.precio,
+      existencias: p.existencias,
+    };
+    this.error = '';
+  }
+
+  cancelar() {
+    this.editandoId = null;
     this.limpiar();
   }
 

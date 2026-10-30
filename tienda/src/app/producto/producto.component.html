@@ -1,5 +1,5 @@
 <div class="app-container">
-  <!-- Formulario de Creación -->
+  <!-- Formulario -->
   <div class="card">
     <div class="header-bar">
       <div>
@@ -9,9 +9,11 @@
       <button class="btn btn-secondary btn-sm" (click)="cerrarSesion()">Cerrar sesión</button>
     </div>
 
-    <h3>Registrar Nuevo Producto</h3>
+    <h3>{{ editandoId === null ? 'Registrar Nuevo Producto' : 'Editar Producto #' + editandoId }}</h3>
     <p style="color: var(--text-muted); font-size: 0.875rem; margin-bottom: 1.25rem;">
-      Ingrese los datos del producto. El ID será asignado automáticamente.
+      {{ editandoId === null 
+          ? 'Ingrese los datos del producto. El ID será asignado automáticamente.' 
+          : 'Modifique los campos y pulse Actualizar para guardar los cambios.' }}
     </p>
 
     <form (ngSubmit)="guardar()">
@@ -63,7 +65,12 @@
       </div>
 
       <div class="form-actions">
-        <button type="submit" class="btn btn-primary">Guardar Producto</button>
+        <button type="submit" class="btn btn-primary">
+          {{ editandoId === null ? 'Guardar Producto' : 'Actualizar Producto' }}
+        </button>
+        @if (editandoId !== null) {
+          <button type="button" class="btn btn-secondary" (click)="cancelar()">Cancelar</button>
+        }
       </div>
     </form>
 
@@ -95,6 +102,7 @@
               <th>Nombre</th>
               <th>Precio</th>
               <th>Existencias</th>
+              <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -105,6 +113,11 @@
                 <td>{{ p.nombre }}</td>
                 <td>L {{ p.precio }}</td>
                 <td>{{ p.existencias }} unidades</td>
+                <td>
+                  <div class="table-actions">
+                    <button class="btn btn-secondary btn-sm" (click)="editar(p)">Editar</button>
+                  </div>
+                </td>
               </tr>
             }
           </tbody>
